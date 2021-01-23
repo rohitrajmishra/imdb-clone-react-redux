@@ -1,7 +1,3 @@
-// {
-//   type: "ADD_MOVIES"
-// }
-
 // Actions types
 export const ADD_MOVIES = 'ADD_MOVIES';
 
