@@ -2,27 +2,25 @@ import React from "react";
 import { data } from "../data";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
+import { addMovies } from "../actions";
 
 class App extends React.Component {
   componentDidMount() {
     const { store } = this.props;
     store.subscribe(() => {
-      console.log('UPDATED');
+      console.log("UPDATED");
       // NOTE: For testing the logic we are forceUpdate, otherwise don't use it in normal scenarios
       this.forceUpdate();
-    })
+    });
     // make api call
     // dispatch action
-    store.dispatch({
-      type: "ADD_MOVIES",
-      movies: data
-    });
+    store.dispatch(addMovies(data));
 
     console.log("STATE: ", store.getState());
   }
 
   render() {
-    console.log('RENDER');
+    console.log("RENDER");
     const movies = this.props.store.getState();
     return (
       <div className="App">
