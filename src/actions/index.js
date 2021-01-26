@@ -10,7 +10,7 @@ export function addMovies(movies) {
   }
 }
 
-export function addFavourite(movie) {
+export function addToFavourites(movie) {
   return {
     type: ADD_TO_FAVOURITES,
     movie: movie
