@@ -2,11 +2,13 @@ import {
   ADD_MOVIES,
   ADD_TO_FAVOURITES,
   REMOVE_FROM_FAVOURITES,
+  SET_SHOW_FAVOURITES,
 } from "../actions";
 
 const initialMovieState = {
   movies: [],
-  favorites: [],
+  favourites: [],
+  showFavourites: false,
 };
 
 export default function movies(state = initialMovieState, action) {
@@ -19,16 +21,21 @@ export default function movies(state = initialMovieState, action) {
     case ADD_TO_FAVOURITES:
       return {
         ...state,
-        favorites: [action.movie, ...state.favorites],
+        favourites: [action.movie, ...state.favourites],
       };
     case REMOVE_FROM_FAVOURITES:
-      const filteredArray = state.favorites.filter(
+      const filteredArray = state.favourites.filter(
         (movie) => movie.Title !== action.movie.Title
       );
 
       return {
         ...state,
-        favorites: filteredArray,
+        favourites: filteredArray,
+      };
+    case SET_SHOW_FAVOURITES:
+      return {
+        ...state,
+        showFavourites: action.val,
       };
     default:
       return state;

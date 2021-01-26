@@ -2,7 +2,7 @@ import React from "react";
 import { data } from "../data";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
-import { addMovies } from "../actions";
+import { addMovies, setShowFavourites } from "../actions";
 
 class App extends React.Component {
   componentDidMount() {
@@ -20,31 +20,50 @@ class App extends React.Component {
   }
 
   isMovieFavourite = (movie) => {
-    const { favorites } = this.props.store.getState();
+    const { favourites } = this.props.store.getState();
 
-    const index = favorites.indexOf(movie);
+    const index = favourites.indexOf(movie);
 
     if (index !== -1) {
-      return true; // movie exists in favorites list
+      return true; // movie exists in favourites list
     } else {
       return false;
     }
   };
 
+  onChangeTab = (val) => {
+    const { store } = this.props;
+    store.dispatch(setShowFavourites(val));
+  };
+
   render() {
     console.log("RENDER", this.props.store.getState());
-    const { movies } = this.props.store.getState(); // { movies: []. favourites: [] }
+    const { movies, favourites, showFavourites } = this.props.store.getState(); // { movies: []. favourites: [] }
+
+    // Select between movies or favourites to display based on showFavourites flag
+    const displayMovies = showFavourites ? favourites : movies;
+
     return (
       <div className="App">
         <Navbar />
         <div className="main">
           <div className="tabs">
-            <div className="tab">Movies</div>
-            <div className="tab">Favourite</div>
+            <div
+              className={`tab ${showFavourites ? "" : "active-tabs"}`}
+              onClick={() => this.onChangeTab(false)}
+            >
+              Movies
+            </div>
+            <div
+              className={`tab ${showFavourites ? "active-tabs" : ""}`}
+              onClick={() => this.onChangeTab(true)}
+            >
+              Favourite
+            </div>
           </div>
 
           <div className="list">
-            {movies.map((movie, index) => (
+            {displayMovies.map((movie, index) => (
               <MovieCard
                 movie={movie}
                 key={`movie-${index}`}
@@ -53,6 +72,9 @@ class App extends React.Component {
               />
             ))}
           </div>
+          {displayMovies.length === 0 ? (
+            <div className="no-movies">No movies to display!</div>
+          ) : null}
         </div>
       </div>
     );
